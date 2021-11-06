@@ -77,12 +77,12 @@ void run_game() {
 
         // Draw all bullets
         for(int i = 0; i < BULLETS; i++) {
-                // if(!(p->bullets[i]->invisible)) {
+                if(!(p->bullets[i]->invisible)) {
                     // Use this bullet
                     Bullet* b = (Bullet*)(p->bullets[i]);
                     b->draw((Sprite*)b);
                     
-                // }
+                }
             }
 
         player_input(keys, (Player*)p, &movement_cooldown);
