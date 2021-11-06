@@ -43,6 +43,7 @@ struct Enemy {
     int width;
     int height;
     bool (*collision)(struct Sprite *self, struct Sprite *other);
+    bool invisible;
 } __attribute__((packed));
 
 

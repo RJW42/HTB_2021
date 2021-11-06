@@ -141,16 +141,19 @@ bool check_enemy_contact(Player *player, Wave *wave, Enemy *enemy3) {
         int offset_x = player->x + player->width;
         int offset_y = player->y + player->height;
 
+        if (!enemy->invisible) {
         if ((player->x >= enemy->x && player->x <= (enemy->x + enemy->width)) || (offset_x >= enemy->x && offset_x <= (enemy->x + enemy->width))) {
             if ((player->y >= enemy->y && player->y <= (enemy->y + enemy->height)) || (offset_y >= enemy->y && offset_y <= (enemy->y + enemy->height))) {
                 enemy3->draw((Sprite *)enemy3);
                 return true;
             }
         }
+        }
     }
 
     return false;
 }
+
 
 void wave_update(Wave *wave) {
     static int counter = 100;

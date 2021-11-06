@@ -108,7 +108,9 @@ void _draw_enemy(Sprite* s){
     // Draw player 
     for(int x = self->x; x < self->x + self->width && x<320; x++){
         for(int y = self->y; y < self->y + self->height && y<200; y++){
+            if (!self->invisible) {
             put_buffer_exact(x, y, (u8)40);
+            }
         }
     }
 }
@@ -164,6 +166,7 @@ Enemy* new_enemy(int x, int y, int width, int height){
     
     self->draw = _draw_enemy;
     self->collision = _collision_player;
+    self->invisible = false;
 
     return self;
 }
