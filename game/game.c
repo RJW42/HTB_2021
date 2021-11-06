@@ -14,7 +14,7 @@ void wave_update(Wave *wave);
 void all_bullet_update(Bullet** bs);
 void bullet_update(Bullet* b);
 bool check_enemy_contact(Player *player, Wave *wave);
-void check_bullet_contact(Player *player, Wave *wave);
+void check_bullet_contact(Player *player, Wave *wave, int* score);
 
 // Main game driver code
 void run_game() {
@@ -39,11 +39,10 @@ void run_game() {
     Move *move2 = new_move(-1, 0);
     Move *move3 = new_move(-1, -2);
 
-    char score_string[2];
-    int_to_ascii(score, score_string);
+    
 
     Text * score_text = new_text(5, 191, 8, 8, "SCORE ", 6);
-    Text * number_text = new_text(53, 191, 8, 8, score_string, 1);
+    
 
     int enemy_len = 2;
     int move_len = 3;
@@ -80,7 +79,10 @@ void run_game() {
         for (int i = 0; i < enemy_len; i++){
             enemies[i]->draw((Sprite *)enemies[i]);
         }
-        
+
+        char score_string[2];
+            int_to_ascii(score, score_string);
+        Text * number_text = new_text(53, 191, 8, 8, score_string, 1);
         score_text->draw((Sprite*)score_text);
         number_text->draw((Sprite*)number_text);
 
@@ -105,7 +107,7 @@ void run_game() {
 
         flush_buffer();
 
-        check_bullet_contact(p, wave);
+        check_bullet_contact(p, wave, &score);
 
         // Check for end condition 
         done = check_enemy_contact(p, wave);
@@ -165,7 +167,7 @@ bool check_enemy_contact(Player *player, Wave *wave) {
     return false;
 }
 
-void check_bullet_contact(Player *player, Wave *wave) {
+void check_bullet_contact(Player *player, Wave *wave, int* score) {
     // For bullet in bullets, for enemy in wave, if both visible, if they both intersect then they both become invisible.
     for (int i = 0; i < BULLETS; i++) {
         Bullet *b = player->bullets[i];
@@ -185,6 +187,8 @@ void check_bullet_contact(Player *player, Wave *wave) {
             if ((b->y >= e->y && b->y <= (e->y + e->height)) || (offset_y >= e->y && offset_y <= (e->y + e->height))) {
                 b->invisible = true;
                 e->invisible = true;
+                *score += 1;
+                break;
             }
         }
 
