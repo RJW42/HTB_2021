@@ -23,5 +23,5 @@ void main() {
    
     // Init Time 
     asm volatile("sti");
-    init_timer(1193180);
+    init_timer(50);
 }

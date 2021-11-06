@@ -7,15 +7,7 @@
 u32 tick = 0;
 
 static void timer_callback(registers_t regs) {
-    for(int x = 0; x < 320; x++)
-        for(int y = 0; y < 200; y++)
-            if(tick){
-                put_pixel(x, y, 20, 40, 10);
-            }else{
-                put_pixel(x, y, 50, 50, 50);
-            }
-
-    tick = !tick;
+    tick += 1;
 }
 
 void init_timer(u32 freq) {
