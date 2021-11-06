@@ -4,11 +4,13 @@
 #include "../cpu/types.h"
 
 struct sprite_struct_ {
-    void (*draw)(sprite *self);
+    void (*draw)(struct sprite_struct_ *self);
     int x;
     int y;
 }__attribute__((packed));
 
 typedef struct sprite_struct_ sprite;
+
+void run_game();
 
 #endif
