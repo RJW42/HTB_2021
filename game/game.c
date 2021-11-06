@@ -8,6 +8,7 @@
 
 // Init functions 
 void wait_until(u32 time);
+void player_input(u8* keys, Player *p);
 
 // Main game driver code
 void run_game() {
@@ -18,12 +19,14 @@ void run_game() {
     bool done = false;
 
     // Init Player 
-    Player *p = new_player(90, 0, 20, 20);
-    
+    Player *p = new_player(20, 90, 20, 20);
+
     u32 previous_time = get_time();
 
     // Game loop
     while(!done) {
+
+
 
         // Get time of last frame  then update previos time. 
         // We update previous time now as we want to record 
@@ -36,49 +39,45 @@ void run_game() {
             continue;
         } 
 
+
+        p->draw((Sprite*)p);
+
+        player_input(keys, (Player*)p);
+
         // End of timer information. Start of game logic
-        if(keys[KEY_1]){
-            for(int x = 0; x < 360; x++){
-                for(int y = 0; y < 200; y++){
-                    put_buffer_exact(x, y, 40);
-                }
-            }
-        }else{
-            for(int x = 0; x < 360; x++){
-                for(int y = 0; y < 200; y++){
-                    put_buffer_exact(x, y, 0);
-                }
-            }
-        }
+
+        
+        test++;
 
         flush_buffer();
 
+      
     }
 }
 
 
 void player_input(u8* keys, Player *p) {
-    if(KEY_K) {
+    if(keys[KEY_K]) {
         // Up
 
         // Check that not going to go out of bounds 
-        if (p->y == 10) {
+        if (p->y <= 10) {
             return;
         }
 
         // Move player up
-        p->y++;
-    } else if (KEY_L) {
+        p->y -= 2;
+    } else if (keys[KEY_L]) {
         // Down
 
         // Check that not going to go out of bounds 
-        if (p->y == 170) {
+        if (p->y >= 170) {
             return;
         }
 
         // Move player down
-        p->y--;
-    } else if (KEY_A) {
+        p->y+=2;
+    } else if (keys[KEY_A]) {
         // Shoot
 
         // Check able to shoot
@@ -91,5 +90,5 @@ void player_input(u8* keys, Player *p) {
             p->cooldown = 10;
         }
 
-}
+    }
 }

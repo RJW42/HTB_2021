@@ -41,7 +41,7 @@ u32 calloc(u32 size) {
     u32 ret = malloc(size);
 
     // Set memory to 0
-    memory_set(&ret, 0, size);
+    memory_set((u8*)ret, 0, size);
     return ret;
 }
 
