@@ -22,6 +22,8 @@ bool check_enemy_contact(Player *player, Wave *wave);
 
 void check_bullet_contact(Player *player, Wave *wave, int* score);
 
+bool enemies_killed(Wave *wave);
+
 
 void clear_screen();
 
@@ -41,9 +43,9 @@ void run_game() {
 
     u32 previous_time = get_time();
 
-    Enemy *enemy1 = new_enemy(200, 70, 20, 20);
-    Enemy *enemy2 = new_enemy(200, 110, 20, 20);
-    Enemy *enemy3 = new_enemy(100, 110, 20, 20);
+    Enemy *enemy1 = new_enemy(300, 70, 20, 20);
+    Enemy *enemy2 = new_enemy(250, 110, 20, 20);
+    Enemy *enemy3 = new_enemy(300, 150, 20, 20);
 
     Move *move1 = new_move(-1, 2);
     Move *move2 = new_move(-1, 0);
@@ -54,10 +56,10 @@ void run_game() {
     Text * score_text = new_text(5, 191, 8, 8, "SCORE ", 6);
     
 
-    int enemy_len = 2;
+    int enemy_len = 3;
     int move_len = 3;
 
-    Enemy *enemies[2] = {enemy1, enemy2};
+    Enemy *enemies[3] = {enemy1, enemy2, enemy3};
 
     Move *moves[3] = {move1, move2, move3};
 
@@ -117,8 +119,20 @@ void run_game() {
         check_bullet_contact(p, wave, &score);
 
         // Check for end condition 
-        done = check_enemy_contact(p, wave); 
+        done = check_enemy_contact(p, wave) || enemies_killed(wave);
     }
+}
+
+bool enemies_killed(Wave *wave) {
+
+    for (int i = 0; i < wave->enemies_length; i++) {
+        Enemy *e = wave->enemies[i];
+        if (!e->invisible) {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 void all_bullet_update(Bullet** bs) {
