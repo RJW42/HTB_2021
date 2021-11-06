@@ -132,7 +132,8 @@ void irq_handler(registers_t r) {
 }
 
 void isr_handler(registers_t r) {
-    // // TODO Print to screen on receeved interupt 
+    // TODO Print to screen on receeved interupt 
+
     // for(int x = 0; x < 320; x++)
     //     for(int y = 0; y < 200; y++)
     //         put_pixel(x, y, 0, 0, 80);
