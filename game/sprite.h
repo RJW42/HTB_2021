@@ -40,11 +40,14 @@ struct Move {
 } __attribute__((packed));
 
 struct Wave {
+    int move_repetitions;
+    int repetitions_till_next;
     int next_move;
     int enemies_length;
     int path_length;
     struct Enemy** enemies;
     struct Move** path;
+    void (*make_move)(struct Wave *self);
 } __attribute__((packed));
 
 typedef struct Sprite Sprite;

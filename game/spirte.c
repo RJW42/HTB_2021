@@ -56,6 +56,31 @@ bool _collision_player(Sprite *s, Sprite *other){
     return false;
 }
 
+void _wave_make_move(Wave *self){
+
+    Move *m = self->path[self->next_move];
+
+    for (int i = 0; i < self->enemies_length; i++){
+        Enemy *e = self->enemies[i];
+        e->x = e->x + m->x;
+        e->y = e->y + m->y;
+    }
+
+    // Increment to next move in path
+    if (self->repetitions_till_next <= 0) {
+        
+        self->repetitions_till_next = self->move_repetitions;
+        self->next_move = self->next_move + 1;
+          
+        if (self->next_move >= self->path_length) {
+            self->next_move = 0;
+        }
+    } else {
+        self->repetitions_till_next = self->repetitions_till_next - 1;
+    }
+  
+}
+
 /* ***** Enemy ***** */
 Enemy* new_enemy(int x, int y, int width, int height){
 
@@ -79,8 +104,12 @@ Wave* new_wave(Enemy** enemies, int enemies_length, Move** path, int path_length
     // Allocate memory for object
     Wave* self = (Wave*) malloc(sizeof(Wave));
 
+    self->move_repetitions = 10;
+    self->repetitions_till_next = self->move_repetitions;
+
     // Next move index is start of path
     self->next_move = 0;
+    self->make_move = _wave_make_move;
 
     // Set pointers for enemy and path arrays
     self->enemies_length = enemies_length;

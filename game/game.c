@@ -9,6 +9,7 @@
 // Init functions 
 void wait_until(u32 time);
 void player_input(u8* keys, Player *p, int *movement_cooldown);
+void wave_update(Wave *wave);
 
 // Main game driver code
 void run_game() {
@@ -23,33 +24,27 @@ void run_game() {
 
     u32 previous_time = get_time();
 
-//     Enemy *enemy1 = new_enemy(90, 0, 20, 40);
-//     Enemy *enemy2 = new_enemy(10, 10, 20, 20);
-//     Enemy *enemy3 = new_enemy(10, 10, 20, 20);
+    Enemy *enemy1 = new_enemy(200, 70, 20, 20);
+    Enemy *enemy2 = new_enemy(200, 110, 20, 20);
 
-//     Move *move2 = new_move(0, 0);
+    Move *move1 = new_move(-1, 2);
+    Move *move2 = new_move(-1, 0);
+    Move *move3 = new_move(-1, -2);
 
-//     int enemy_len = 2;
-//     int move_len = 1;
 
-//     Enemy *enemies[2] = {enemy1, enemy2};
+    int enemy_len = 2;
+    int move_len = 3;
 
-//     Move *moves[1] = {move2};
+    Enemy *enemies[2] = {enemy1, enemy2};
 
-//     Wave *wave = new_wave(enemies, enemy_len, moves, move_len);
+    Move *moves[3] = {move1, move2, move3};
 
-//     // Game loop
-//     while(!done) {
-//         // p->draw((Sprite *) p);
-//         for (int i = 0; i < enemy_len; i++){
-//             enemies[i]->draw((Sprite *)enemies[i]);
-//         }
+    Wave *wave = new_wave(enemies, enemy_len, moves, move_len);
+
     int movement_cooldown = 0;
 
     // Game loop
     while(!done) {
-
-
 
         // Get time of last frame  then update previos time. 
         // We update previous time now as we want to record 
@@ -69,10 +64,16 @@ void run_game() {
             }
         }
 
+        for (int i = 0; i < enemy_len; i++){
+            enemies[i]->draw((Sprite *)enemies[i]);
+        }
+        
+
         p->draw((Sprite*)p);
 
         player_input(keys, (Player*)p, &movement_cooldown);
 
+        wave_update(wave);
 
         flush_buffer();
 
@@ -81,6 +82,13 @@ void run_game() {
     }
 }
 
+void wave_update(Wave *wave) {
+    static int counter = 100;
+    if (--counter <= 0) {
+        counter = 100;
+        wave->make_move(wave);
+    }
+}
 
 void player_input(u8* keys, Player *p, int *movement_cooldown) {
     static int y_plus = 0;
