@@ -5,6 +5,7 @@
 #include "../libc/mem.h"
 #include "../cpu/timer.h"
 #include "sprite.h"
+#include "../libc/string.h"
 
 // Init functions 
 void wait_until(u32 time);
@@ -17,6 +18,8 @@ void check_bullet_contact(Player *player, Wave *wave);
 
 // Main game driver code
 void run_game() {
+    int score = 0;
+
     // Get the keys pressed 
     u8* keys = get_key_presses();
 
@@ -36,7 +39,11 @@ void run_game() {
     Move *move2 = new_move(-1, 0);
     Move *move3 = new_move(-1, -2);
 
-    Text * score_text = new_text(5, 191, 8, 8, "SCORE 0", 7);
+    char score_string[2];
+    int_to_ascii(score, score_string);
+
+    Text * score_text = new_text(5, 191, 8, 8, "SCORE ", 6);
+    Text * number_text = new_text(53, 191, 8, 8, score_string, 1);
 
     int enemy_len = 2;
     int move_len = 3;
@@ -75,6 +82,7 @@ void run_game() {
         }
         
         score_text->draw((Sprite*)score_text);
+        number_text->draw((Sprite*)number_text);
 
         p->draw((Sprite*)p);
 
