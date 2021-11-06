@@ -101,3 +101,34 @@ Move* new_move(int x, int y) {
 
     return self;
 }
+
+
+
+/* ***** Stars ***** */
+void _draw_star(Sprite* s);
+
+
+Star* new_star(int y, u8 color){
+    // Allocate memory 
+    Star* self = (Star*) malloc(sizeof(Star));
+
+    self->x = 315;
+    self->y = y;
+    self->height = 1;
+    self->width = 2;
+    self->color = color;
+    self->draw = _draw_star;
+}
+
+
+void _draw_star(Sprite* s){
+    // Get Star object
+    Star* self = (Star*)s;
+
+    // Draw Star 
+    for(int x = self->x; x < self->x + self->width && x<320; x++){
+        for(int y = self->y; y < self->y + self->height && y<200; y++){
+            put_buffer_exact(x, y, self->color);
+        }
+    }
+}
