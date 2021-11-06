@@ -93,7 +93,7 @@ void wave_update(Wave *wave) {
 void player_input(u8* keys, Player *p, int *movement_cooldown) {
     static int y_plus = 0;
     static int y_minus = 0;
-
+    static int bullet_cooldown = 0;
 
     if(keys[KEY_K]) {
         // Up
@@ -130,15 +130,15 @@ void player_input(u8* keys, Player *p, int *movement_cooldown) {
     } else if (keys[KEY_A]) {
         // Shoot
 
-        // Check able to shoot
-        if(p->cooldown != 0) {
-            p->cooldown--;
-        } else {
-            // Able to shoot
+        if( ++bullet_cooldown >= 15) {
+            // Shoot the bullet
 
-            // Reset cooldown
-            p->cooldown = 10;
+
+            // reset the counter
+            bullet_cooldown = 0;
         }
+
+        
 
     }
 }

@@ -13,6 +13,16 @@ struct Sprite {
     bool (*collision)(struct Sprite *self, struct Sprite *other);
 } __attribute__((packed));
 
+struct Bullet {
+    void (*draw)(struct Sprite *self);
+    int x;
+    int y;
+    int frame;
+    int width;
+    int height;
+    bool (*collision)(struct Sprite *self, struct Sprite *other);
+ } __attribute__((packed));
+
 struct Player {
     void (*draw)(struct Sprite *self);
     int x;
@@ -21,7 +31,7 @@ struct Player {
     int width;
     int height;
     bool (*collision)(struct Sprite *self, struct Sprite *other);
-    int cooldown;
+    struct Bullet** bullets;
 } __attribute__((packed));
 
 struct Enemy {
@@ -33,6 +43,8 @@ struct Enemy {
     int height;
     bool (*collision)(struct Sprite *self, struct Sprite *other);
 } __attribute__((packed));
+
+
 
 struct Move {
     int x;
@@ -55,6 +67,7 @@ typedef struct Enemy Enemy;
 typedef struct Player Player;
 typedef struct Move Move;
 typedef struct Wave Wave;
+typedef struct Bullet Bullet;
 
 Player* new_player(int x, int y, int width, int height);
 Enemy* new_enemy(int x, int y, int width, int height);
