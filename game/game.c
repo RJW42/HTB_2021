@@ -6,6 +6,11 @@
 #include "../cpu/timer.h"
 #include "sprite.h"
 #include "../libc/string.h"
+#include "../libc/rand.h"
+
+#define NUM_STARS 60
+#define PLAYER_MOVE_COOLDOWN 15
+
 
 // Init functions 
 void wait_until(u32 time);
@@ -14,7 +19,12 @@ void wave_update(Wave *wave);
 void all_bullet_update(Bullet** bs);
 void bullet_update(Bullet* b);
 bool check_enemy_contact(Player *player, Wave *wave);
+
 void check_bullet_contact(Player *player, Wave *wave, int* score);
+
+
+void clear_screen();
+
 
 // Main game driver code
 void run_game() {
@@ -70,12 +80,9 @@ void run_game() {
         } 
 
         // End of timer information. Start of game logic
-        for (int i = 0; i < 320; i++) {
-            for (int j = 0; j < 200; j++) {
-                put_buffer_exact(i, j, 0);
-            }
-        }
+        clear_screen();
 
+        // Bullets 
         for (int i = 0; i < enemy_len; i++){
             enemies[i]->draw((Sprite *)enemies[i]);
         }
@@ -110,7 +117,7 @@ void run_game() {
         check_bullet_contact(p, wave, &score);
 
         // Check for end condition 
-        done = check_enemy_contact(p, wave);
+        done = check_enemy_contact(p, wave); 
     }
 }
 
@@ -225,7 +232,7 @@ void player_input(u8* keys, Player *p, int *movement_cooldown) {
         y_minus++;
         y_plus = 0;
 
-        if(y_minus >= 10){
+        if(y_minus >= PLAYER_MOVE_COOLDOWN){
             p->y -= 1;
             y_minus = 0;
         }
@@ -241,7 +248,7 @@ void player_input(u8* keys, Player *p, int *movement_cooldown) {
         y_plus++;
         y_minus = 0;
 
-        if(y_plus >= 10){
+        if(y_plus >= PLAYER_MOVE_COOLDOWN){
             p->y+=1;
             y_plus = 0;
         }
@@ -269,5 +276,93 @@ void player_input(u8* keys, Player *p, int *movement_cooldown) {
 
         
 
+    }
+}
+
+
+Star** init_stars();
+u8 star_color();
+
+
+void clear_screen(){
+    // Keep track of stars 
+    static int stars_update = 0;
+    int created_stars = 0;
+    static Star** stars = 0;
+
+    // Init stars
+    if(stars == 0){
+        stars = init_stars();
+    }
+
+    // Initlise Screen to black
+    for (int i = 0; i < 320; i++) 
+        for (int j = 0; j < 200; j++)
+            put_buffer_exact(i, j, 0);
+
+    stars_update++;
+
+
+    // Update stars
+    if(stars_update == 10){
+        srand(get_time());
+        // Create any stars which are null
+        for(int i = 0; i < NUM_STARS; i++){
+            // Check if star needs created 
+            if(stars[i] == 0 && created_stars < 1 && generate_rand(2500) < 20){
+                created_stars++;
+                stars[i] = new_star(generate_rand(195) + 2, star_color());
+            }
+
+            // Move star 
+            stars[i]->x -= 1;
+
+            // Check if zero
+            if(stars[i]->x == 0){
+                stars[i]->x = 315;
+                stars[i]->y = generate_rand(195) + 2;
+                stars[i]->color = star_color();
+            }
+        }
+
+        // Reset update 
+        stars_update = 0;
+    }
+
+    // Draw stars 
+    for(int i = 0; i < NUM_STARS; i++){
+        // Draw star 
+        if(stars[i] != 0)
+            stars[i]->draw((Sprite*)stars[i]);
+    }
+}
+
+
+Star** init_stars(){
+    // Malloc memory 
+    Star** stars = (Star**) malloc(sizeof(Star) * NUM_STARS);
+
+    // Init all to zero 
+    for(int i = 0; i < NUM_STARS; i++){
+        stars[i] = 0;
+    }
+
+    return stars;
+}
+
+u8 star_color(){
+    switch(generate_rand(6)){
+        case 0:
+            return 63;
+        case 1:
+            return 62;
+        case 2:
+            return 61;
+        case 3: 
+            return 59;
+        case 4:
+            return 58;
+        default:
+            return 57;
     }
 }

@@ -116,16 +116,25 @@ void _draw_enemy(Sprite* s){
     }
 
     // Draw Enemy 
-    /*
-    for(int x = self->x; x < self->x + self->width && x<320; x++){
-        for(int y = self->y; y < self->y + self->height && y<200; y++){
-            if (!self->invisible) {
-            put_buffer_exact(x, y, (u8)40);
-            }
-        }
-    } */
+    int arr_1[13][10] = {
+        {0, 0, 0, 0, 0, 0, 0, 11, 11, 11},
+        {11, 0, 0, 0, 0, 0, 11, 11, 11, 11},
+        {11, 11, 0, 0, 0, 11, 11, 11, 11, 11},
+        {0, 11, 11, 0, 0, 11, 11, 11, 0, 0},
+        {0, 62, 32, 62, 11, 11, 0, 0, 0, 0},
+        {0, 32, 32, 62, 62, 32, 32, 62, 32, 0},
+        {62, 62, 62, 62, 62, 32, 32, 62, 32, 32},
+        {0, 32, 32, 62, 62, 32, 32, 62, 32, 0},
+        {0, 62, 32, 62, 11, 11, 0, 0, 0, 0},
+        {0, 11, 11, 0, 0, 11, 11, 11, 0, 0},
+        {11, 11, 0, 0, 0, 11, 11, 11, 11, 11},
+        {11, 0, 0, 0, 0, 0, 11, 11, 11, 11},
+        {0, 0, 0, 0, 0, 0, 0, 11, 11, 11}
+    };
 
-    int arr[9][10] = {
+    int arr_2[13][10] = {
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {11, 11, 0, 0, 0, 11, 11, 11, 11, 11},
         {0, 0, 11, 0, 11, 11, 11, 11, 11, 11},
         {0, 62, 32, 62, 11, 11, 0, 0, 0, 0},
@@ -134,14 +143,27 @@ void _draw_enemy(Sprite* s){
         {0, 32, 32, 62, 62, 32, 32, 62, 32, 0},
         {0, 62, 32, 62, 11, 11, 0, 0, 0, 0},
         {0, 0, 11, 0, 11, 11, 11, 11, 11, 11},
-        {11, 11, 0, 0, 0, 11, 11, 11, 11, 11}
+        {11, 11, 0, 0, 0, 11, 11, 11, 11, 11},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
     };
 
-    for(int x = self->x; x < self->x + 10 && x<320; x++){
-        for(int y = self->y; y < self->y + 9 && y<200; y++){
-            put_buffer_exact(x, y,(u8) arr[y - self->y][x-self->x]);
-        }
-    }
+    // Draw sprite 
+    if(self->frame < 300){
+        for(int x = self->x; x < self->x + 10 && x<320; x++)
+            for(int y = self->y; y < self->y + 13 && y<200; y++){
+                put_buffer_exact(x, y,(u8) arr_1[y - self->y][x-self->x]);
+            }
+    }else{
+        for(int x = self->x; x < self->x + 10 && x<320; x++)
+            for(int y = self->y; y < self->y + 13 && y<200; y++){
+                put_buffer_exact(x, y,(u8) arr_2[y - self->y][x-self->x]);
+            }
+    }   
+
+    // Update frame 
+    if(self->frame++ == 600)
+        self->frame = 0;
 }
 
 bool _collision_player(Sprite *s, Sprite *other){
@@ -187,7 +209,7 @@ Enemy* new_enemy(int x, int y, int width, int height){
     // Init vars
     self->x = x;
     self->y = y;
-    self->width = 10;
+    self->width = 13;
     self->height = 10;
     self->draw = _draw_enemy;
     self->collision = _collision_player;
