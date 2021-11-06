@@ -179,7 +179,7 @@ Enemy* new_enemy(int x, int y, int width, int height){
     self->y = y;
     self->width = 10;
     self->height = 10;
-    self->draw = _draw_player;
+    self->draw = _draw_enemy;
     self->collision = _collision_player;
 
     return self;
