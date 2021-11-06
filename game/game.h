@@ -3,10 +3,12 @@
 
 #include "../cpu/types/h"
 
-struct spirte_struct_ {
-    void (*draw)(sprite)
+struct sprite_struct_ {
+    void (*draw)(sprite *self);
+    int x;
+    int y;
 }__attribute__((packed));
 
-typedef struct spirte_struct_ sprite;
+typedef struct sprite_struct_ sprite;
 
 #endif
