@@ -32,7 +32,7 @@ void _draw_player(Sprite* s){
     // Draw player 
     for(int x = self->x; x < self->x + self->width && x<320; x++){
         for(int y = self->y; y < self->y + self->height && y<200; y++){
-            put_pixel_exact(x, y, (u8)40);
+            put_buffer_exact(x, y, (u8)40);
         }
     }
 }

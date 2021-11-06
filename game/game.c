@@ -8,7 +8,7 @@
 
 // Init functions 
 void wait_until(u32 time);
-void player_input(u8* keys, Player *p);
+void player_input(u8* keys, Player *p, int *movement_cooldown);
 
 // Main game driver code
 void run_game() {
@@ -22,6 +22,8 @@ void run_game() {
     Player *p = new_player(20, 90, 20, 20);
 
     u32 previous_time = get_time();
+
+    int movement_cooldown = 0;
 
     // Game loop
     while(!done) {
@@ -39,15 +41,17 @@ void run_game() {
             continue;
         } 
 
+        // End of timer information. Start of game logic
+        for (int i = 0; i < 320; i++) {
+            for (int j = 0; j < 200; j++) {
+                put_buffer_exact(i, j, 0);
+            }
+        }
 
         p->draw((Sprite*)p);
 
-        player_input(keys, (Player*)p);
+        player_input(keys, (Player*)p, &movement_cooldown);
 
-        // End of timer information. Start of game logic
-
-        
-        test++;
 
         flush_buffer();
 
@@ -56,7 +60,11 @@ void run_game() {
 }
 
 
-void player_input(u8* keys, Player *p) {
+void player_input(u8* keys, Player *p, int *movement_cooldown) {
+    static int y_plus = 0;
+    static int y_minus = 0;
+
+
     if(keys[KEY_K]) {
         // Up
 
@@ -66,7 +74,13 @@ void player_input(u8* keys, Player *p) {
         }
 
         // Move player up
-        p->y -= 2;
+        y_minus++;
+        y_plus = 0;
+
+        if(y_minus >= 10){
+            p->y -= 1;
+            y_minus = 0;
+        }
     } else if (keys[KEY_L]) {
         // Down
 
@@ -76,7 +90,13 @@ void player_input(u8* keys, Player *p) {
         }
 
         // Move player down
-        p->y+=2;
+        y_plus++;
+        y_minus = 0;
+
+        if(y_plus >= 10){
+            p->y+=1;
+            y_plus = 0;
+        }
     } else if (keys[KEY_A]) {
         // Shoot
 
