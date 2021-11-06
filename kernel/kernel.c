@@ -3,7 +3,7 @@
 #include "../cpu/isr.h"
 #include "../cpu/timer.h"
 #include "../drivers/keyboard.h"
-
+#include "../game/game.h"
 
 void init();
 
@@ -12,21 +12,6 @@ void main() {
     // Initilise The OS 
     init();
 
-    bool* keys = get_key_presses();
-
-    while(1 == 1){
-        if(keys[KEY_1] == false){
-            for(int x = 0; x < 320; x++){
-                for(int y = 0; y < 200; y++)
-                    put_pixel(x, y, 50, 0, 0);
-            }
-        }else{
-            for(int x = 0; x < 320; x++){
-                for(int y = 0; y < 200; y++)
-                    put_pixel(x, y, 0, 0, 0);
-            }
-        }
-    }
 }
 
 
