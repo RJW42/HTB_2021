@@ -1,13 +1,12 @@
 #include "rand.h"
+#include "../cpu/timer.h"
 
-static unsigned int a = 9;       // multiplier
-static unsigned int b = 13;      // increment
+static unsigned int seed = 1;
 
-
-unsigned int generate_rand(unsigned int modulo) {
-    // Set seed
-    static unsigned int x0 = 12;
-
-    x0 = (a * x0 + b) % modulo;
-    return x0;
+void srand (int newseed) {
+    seed = (unsigned)newseed & 0x7fffffffU;
+}
+unsigned int generate_rand (unsigned int modulo) {
+    seed = (seed * 1103515245U + 12345U) & 0x7fffffffU;
+    return ((unsigned int)seed) % modulo;
 }

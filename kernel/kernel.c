@@ -13,11 +13,14 @@ void main() {
     // Initilise The OS 
     init();
 
+    // Display Start
+
     // Run game
     run_game();
 
+
     /*
-    for(int x = 0; x < 64; x++){
+    for(int x = 0; x < 63; x++){
         put_pixel_exact(x, 0, x);
         put_pixel_exact(x, 1, x);
         put_pixel_exact(x, 2, x);

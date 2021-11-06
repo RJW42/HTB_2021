@@ -46,7 +46,29 @@ struct Enemy {
     bool invisible;
 } __attribute__((packed));
 
+struct Text {
+    void (*draw)(struct Sprite *self);
+    int x;
+    int y;
+    int frame;
+    int width;
+    int height;
+    bool (*collision)(struct Sprite *self, struct Sprite *other);
+    char* text;
+    int textLength;
+} __attribute__((packed));
 
+
+struct Star {
+    void (*draw)(struct Sprite *self);
+    int x;
+    int y;
+    int frame;
+    int width;
+    int height;
+    bool (*collision)(struct Sprite *self, struct Sprite *other);
+    u8 color;
+} __attribute__((packed));
 
 struct Move {
     int x;
@@ -69,11 +91,15 @@ typedef struct Enemy Enemy;
 typedef struct Player Player;
 typedef struct Move Move;
 typedef struct Wave Wave;
+typedef struct Star Star;
 typedef struct Bullet Bullet;
+typedef struct Text Text;
 
+Text* new_text(int x, int y, int width, int height, char* text, int textLength);
 Player* new_player(int x, int y, int width, int height);
 Enemy* new_enemy(int x, int y, int width, int height);
 Wave* new_wave(Enemy** enemies, int enemies_length, Move** path, int path_length);
 Move* new_move(int x, int y);
+Star* new_star(int y, u8 color);
 
 #endif
