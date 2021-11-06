@@ -13,7 +13,7 @@ void main() {
     // Initilise The OS 
     init();
 
-
+    run_game();
 }
 
 

@@ -16,8 +16,13 @@ void run_game() {
     bool done = false;
 
     // Init Player 
-    Player *p = new_player(90, 0, 20, 20);
+    // Player *p = new_player(90, 0, 20, 20);
+
+    Text *title = new_text(20,10,0,0,"ABCDEFGHIJKLMN987654321", 23);
+
     u32 previous_time = get_time();
+
+    title->draw((Text *) title);
 
     // Game loop
     while(!done) {
