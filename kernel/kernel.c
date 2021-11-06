@@ -5,7 +5,6 @@
 #include "../drivers/keyboard.h"
 #include "../game/game.h"
 
-
 void init();
 
 
@@ -13,16 +12,6 @@ void main() {
     // Initilise The OS 
     init();
 
-    bool* keys = get_key_presses();
-
-    
-    for(int x = 0; x < 320; x++)
-        for(int y = 0; y < 200; y++)
-            put_pixel(x, y, 50, 0, 0);
-
-    Sprite *s = (Sprite*)new_square(10, 10);
-
-    s->draw(s);
 }
 
 

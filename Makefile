@@ -11,7 +11,7 @@ AS := nasm # Deal with it
 ASFLAGS := -f elf32 # ELF binary in multiboot format ... mmm ... yummy
 
 LD := ld
-LDFLAGS := -melf_i386 
+LDFLAGS := -melf_i386
 LDFILE := link.ld
 
 MKRESCUE := grub2-mkrescue # On your system it might be called differently
@@ -40,5 +40,5 @@ iso: kernel.bin
 	${AS} ${ASFLAGS} $< -o $@
 
 clean:
-	rm -f *.o *.iso *.bin .isodir/boot/kernel.bin  kernel/*.o drivers/*.o cpu/*.o libc/*.o
+	rm -f *.o *.iso *.bin .isodir/boot/kernel.bin  kernel/*.o drivers/*.o cpu/*.o libc/*.o game/*.o
 

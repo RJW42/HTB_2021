@@ -3,25 +3,15 @@
 
 #include "../cpu/types.h"
 
-typedef struct Sprite {
-    void (*draw)(struct Sprite *self);
-    int x;
-    int y;
-    bool (*collision)(int x, int y, int width, int height);
-} Sprite;
+struct sprite_struct_ {
+    void (*draw)(struct sprite_struct_ *self, u8, u8);
+    u8 height;
+    u8 width;
+}__attribute__((packed));
 
-typedef struct Square {
-    void (*draw)(Sprite *self);
-    int x;
-    int y;
-    bool (*collision)(int x, int y, int width, int height);
-    int height;
-    int width;
-} Square;
+typedef struct sprite_struct_ sprite;
 
-
-void _draw_square(Sprite *self);
-Square* new_square(int height, int width);
+void run_game();
 
  
 #endif
