@@ -134,7 +134,7 @@ void player_input(u8* keys, Player *p, int *movement_cooldown) {
         y_minus++;
         y_plus = 0;
 
-        if(y_minus >= 10){
+        if(y_minus >= 13){
             p->y -= 1;
             y_minus = 0;
         }
@@ -150,7 +150,7 @@ void player_input(u8* keys, Player *p, int *movement_cooldown) {
         y_plus++;
         y_minus = 0;
 
-        if(y_plus >= 10){
+        if(y_plus >= 13){
             p->y+=1;
             y_plus = 0;
         }
