@@ -49,10 +49,14 @@ Bullet* new_bullet() {
 
 void _draw_bullet(Sprite* self) {
     Bullet* b = (Bullet*)self;
-
+    int arr[3][6] = {
+        {63, 63, 63, 9, 9, 63},
+        {36, 36, 36, 63, 9, 9},
+        {63, 63, 63, 9, 9, 63}
+    };
     for(int x = self->x; x < self->x + self->width && x<320; x++){
         for(int y = self->y; y < self->y + self->height && y<200; y++){
-            put_buffer_exact(x, y, (u8)40);
+            put_buffer_exact(x, y, (u8)arr[y - self->y][x-self->x]);
         }
     }
 }
@@ -106,6 +110,10 @@ void _draw_player(Sprite* s){
 void _draw_enemy(Sprite* s){
     // Get Enemy object
     Enemy* self = (Enemy*)s;
+
+    if (self->invisible) {
+        return;
+    }
 
     // Draw Enemy 
     int arr_1[13][10] = {
@@ -238,9 +246,9 @@ void text_loop(int letter[][8], int currentLetter, int posX, int posY){
             for (int x = 0; x < 2; x++){
                 for (int y = 0; y < 2; y++){
                     if (letter[j][i]){
-                        put_pixel_exact(posX + (i * 1) + x + (currentLetter * 9), posY + (j * 1) + y, 63);
+                        put_buffer_exact(posX + (i * 1) + x + (currentLetter * 9), posY + (j * 1) + y, 63);
                     } else {
-                        put_pixel_exact(posX + (i * 1) + x + (currentLetter * 9), posY + (j * 1) + y, 0);
+                        put_buffer_exact(posX + (i * 1) + x + (currentLetter * 9), posY + (j * 1) + y, 0);
                     }
                     
                 }

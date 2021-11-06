@@ -5,19 +5,22 @@
 #include "../libc/mem.h"
 #include "../cpu/timer.h"
 #include "sprite.h"
+<<<<<<< HEAD
 #include "../libc/rand.h"
 
 #define NUM_STARS 60
 #define PLAYER_MOVE_COOLDOWN 15
+=======
+>>>>>>> 4cb0eaf45ce205348f64cad0a367953397da2f58
 
 // Init functions 
 void wait_until(u32 time);
 void player_input(u8* keys, Player *p, int *movement_cooldown);
-void clear_screen();
 void wave_update(Wave *wave);
 void all_bullet_update(Bullet** bs);
 void bullet_update(Bullet* b);
-bool check_enemy_contact(Player *player, Wave *wave, Enemy *enemy3);
+bool check_enemy_contact(Player *player, Wave *wave);
+void check_bullet_contact(Player *player, Wave *wave);
 
 // Main game driver code
 void run_game() {
@@ -29,6 +32,7 @@ void run_game() {
 
     // Init Player 
     Player *p = new_player(20, 90, 20, 20);
+
     u32 previous_time = get_time();
 
     Enemy *enemy1 = new_enemy(200, 70, 20, 20);
@@ -39,6 +43,7 @@ void run_game() {
     Move *move2 = new_move(-1, 0);
     Move *move3 = new_move(-1, -2);
 
+    Text * score_text = new_text(5, 191, 8, 8, "SCORE 0", 7);
 
     int enemy_len = 2;
     int move_len = 3;
@@ -50,7 +55,6 @@ void run_game() {
     Wave *wave = new_wave(enemies, enemy_len, moves, move_len);
 
     int movement_cooldown = 0;
-    srand(get_time());
 
     // Game loop
     while(!done) {
@@ -67,15 +71,19 @@ void run_game() {
         } 
 
         // End of timer information. Start of game logic
-        clear_screen();
-
-        // Draw player 
-        p->draw((Sprite*)p);
-
+        for (int i = 0; i < 320; i++) {
+            for (int j = 0; j < 200; j++) {
+                put_buffer_exact(i, j, 0);
+            }
+        }
 
         for (int i = 0; i < enemy_len; i++){
             enemies[i]->draw((Sprite *)enemies[i]);
         }
+        
+        score_text->draw((Sprite*)score_text);
+
+        p->draw((Sprite*)p);
 
         // Draw all bullets
         for(int i = 0; i < BULLETS; i++) {
@@ -94,11 +102,12 @@ void run_game() {
 
         wave_update(wave);
 
-        // Display Updates 
         flush_buffer();
 
+        check_bullet_contact(p, wave);
+
         // Check for end condition 
-        done = check_enemy_contact(p, wave, enemy3);
+        done = check_enemy_contact(p, wave);
     }
 }
 
@@ -134,7 +143,7 @@ void bullet_update(Bullet* b) {
     b->x += 1;
 }
 
-bool check_enemy_contact(Player *player, Wave *wave, Enemy *enemy3) {
+bool check_enemy_contact(Player *player, Wave *wave) {
     // for enemy in wave: if enemy X range and player X range overlap
     // if enemy Y range and player Y range overlap
     // Then they have hit, print a random orange square
@@ -146,7 +155,6 @@ bool check_enemy_contact(Player *player, Wave *wave, Enemy *enemy3) {
         if (!enemy->invisible) {
         if ((player->x >= enemy->x && player->x <= (enemy->x + enemy->width)) || (offset_x >= enemy->x && offset_x <= (enemy->x + enemy->width))) {
             if ((player->y >= enemy->y && player->y <= (enemy->y + enemy->height)) || (offset_y >= enemy->y && offset_y <= (enemy->y + enemy->height))) {
-                enemy3->draw((Sprite *)enemy3);
                 return true;
             }
         }
@@ -154,6 +162,34 @@ bool check_enemy_contact(Player *player, Wave *wave, Enemy *enemy3) {
     }
 
     return false;
+}
+
+void check_bullet_contact(Player *player, Wave *wave) {
+    // For bullet in bullets, for enemy in wave, if both visible, if they both intersect then they both become invisible.
+    for (int i = 0; i < BULLETS; i++) {
+        Bullet *b = player->bullets[i];
+        if (b->invisible) {
+            continue;
+        }
+        for (int j = 0; j < wave->enemies_length; j++) {
+            Enemy *e = wave->enemies[i];
+            if (e->invisible) {
+                continue;
+            }
+
+            int offset_x = b->x + b->width;
+            int offset_y = b->y + b->height;
+
+            if ((b->x >= e->x && b->x <= (e->x + e->width)) || (offset_x >= e->x && offset_x <= (e->x + e->width))) {
+            if ((b->y >= e->y && b->y <= (e->y + e->height)) || (offset_y >= e->y && offset_y <= (e->y + e->height))) {
+                b->invisible = true;
+                e->invisible = true;
+            }
+        }
+
+        }
+
+    }
 }
 
 
@@ -228,93 +264,5 @@ void player_input(u8* keys, Player *p, int *movement_cooldown) {
 
         
 
-    }
-}
-
-
-Star** init_stars();
-u8 star_color();
-
-
-void clear_screen(){
-    // Keep track of stars 
-    static int stars_update = 0;
-    int created_stars = 0;
-    static Star** stars = 0;
-
-    // Init stars
-    if(stars == 0){
-        stars = init_stars();
-    }
-
-    // Initlise Screen to black
-    for (int i = 0; i < 320; i++) 
-        for (int j = 0; j < 200; j++)
-            put_buffer_exact(i, j, 0);
-
-    stars_update++;
-
-
-    // Update stars
-    if(stars_update == 10){
-        srand(get_time());
-        // Create any stars which are null
-        for(int i = 0; i < NUM_STARS; i++){
-            // Check if star needs created 
-            if(stars[i] == 0 && created_stars < 1 && generate_rand(2500) < 20){
-                created_stars++;
-                stars[i] = new_star(generate_rand(195) + 2, star_color());
-            }
-
-            // Move star 
-            stars[i]->x -= 1;
-
-            // Check if zero
-            if(stars[i]->x == 0){
-                stars[i]->x = 315;
-                stars[i]->y = generate_rand(195) + 2;
-                stars[i]->color = star_color();
-            }
-        }
-
-        // Reset update 
-        stars_update = 0;
-    }
-
-    // Draw stars 
-    for(int i = 0; i < NUM_STARS; i++){
-        // Draw star 
-        if(stars[i] != 0)
-            stars[i]->draw((Sprite*)stars[i]);
-    }
-}
-
-
-Star** init_stars(){
-    // Malloc memory 
-    Star** stars = (Star**) malloc(sizeof(Star) * NUM_STARS);
-
-    // Init all to zero 
-    for(int i = 0; i < NUM_STARS; i++){
-        stars[i] = 0;
-    }
-
-    return stars;
-}
-
-u8 star_color(){
-    switch(generate_rand(6)){
-        case 0:
-            return 63;
-        case 1:
-            return 62;
-        case 2:
-            return 61;
-        case 3: 
-            return 59;
-        case 4:
-            return 58;
-        default:
-            return 57;
     }
 }
