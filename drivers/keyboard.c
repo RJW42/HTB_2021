@@ -2,13 +2,14 @@
 #include "ports.h"
 #include "vga.h"
 #include "../cpu/isr.h"
+#include "../cpu/types.h"
 
 
 
-static u8 key_presses[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+static bool key_presses[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 
-u8* get_key_presses(){
+bool* get_key_presses(){
     return key_presses;
 }
 
@@ -36,7 +37,7 @@ void init_keyboard() {
 void handle_letter(u8 scancode) {
     switch (scancode) {
         case 0x0:
-            key_presses[KEY_ERROR] = 1;
+            key_presses[KEY_ERROR] = true;
             return;
         case 0x1:
             key_presses[KEY_ESC] = 1;

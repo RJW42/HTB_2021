@@ -4,7 +4,7 @@
 #include "../cpu/types.h"
 
 void init_keyboard();
-u8* get_key_presses();
+bool* get_key_presses();
 
 #define KEY_ERROR 0
 #define KEY_ESC 1
