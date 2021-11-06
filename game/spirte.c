@@ -50,9 +50,9 @@ Bullet* new_bullet() {
 void _draw_bullet(Sprite* self) {
     Bullet* b = (Bullet*)self;
     int arr[3][6] = {
-        {63, 63, 63, 9, 9, 63},
-        {36, 36, 36, 63, 9, 9},
-        {63, 63, 63, 9, 9, 63}
+        {0, 0, 0, 9, 9, 0},
+        {36, 36, 36, 0, 9, 9},
+        {0, 0, 0, 9, 9, 0}
     };
     for(int x = self->x; x < self->x + self->width && x<320; x++){
         for(int y = self->y; y < self->y + self->height && y<200; y++){
