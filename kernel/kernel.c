@@ -8,7 +8,7 @@
 
 void init();
 void openGame();
-
+void gameOver();
 
 void main() {
     // Initilise The OS 
@@ -26,7 +26,8 @@ void main() {
     // Run game
     run_game();
 
-
+    // Game Over
+    gameOver();
     /*
     for(int x = 0; x < 63; x++){
         put_pixel_exact(x, 0, x);
@@ -84,8 +85,20 @@ void openGame(){
     helper->draw((Sprite *) helper);
 
     flush_buffer();
+}
 
 
+void gameOver(){
+    for(int x = 0; x < 320; x++){
+        for(int y = 0; y < 200; y++){
+            put_buffer_exact(x, y, 0);
+        }
+    }
 
+    Text *Title = new_text(152,96,0,0,"GAME OVER!",10);
+
+    Title->draw((Sprite *) Title);
+
+    flush_buffer();
 }
 
