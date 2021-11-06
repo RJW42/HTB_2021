@@ -7,8 +7,8 @@ void memory_copy(char *source, char *dest, int nbytes) {
     }
 }
 
-void memory_set(u8 *dest, u8 val, u32 len) {
-    u8 *temp = (u8 *)dest;
+void memory_set(u32 *dest, u8 val, u32 len) {
+    u32 *temp = (u32 *)dest;
     for ( ; len != 0; len--) *temp++ = val;
 }
 
@@ -32,7 +32,16 @@ u32 malloc(u32 size) {
     // Increment the free pointer by the size, so that the memory will not be overwritten.
     free_mem_addr += size;
 
-    // Return the allocated start address.
+    // Return the allocated start address
+    return ret;
+}
+
+u32 calloc(u32 size) {
+    // Allocate memory
+    u32 ret = malloc(size);
+
+    // Set memory to 0
+    memory_set(&ret, 0, size);
     return ret;
 }
 
