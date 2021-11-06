@@ -10,6 +10,8 @@
 void wait_until(u32 time);
 void player_input(u8* keys, Player *p, int *movement_cooldown);
 void wave_update(Wave *wave);
+bool check_enemy_contact(Player *player, Wave *wave, Enemy *enemy3);
+
 
 // Main game driver code
 void run_game() {
@@ -26,6 +28,7 @@ void run_game() {
 
     Enemy *enemy1 = new_enemy(200, 70, 20, 20);
     Enemy *enemy2 = new_enemy(200, 110, 20, 20);
+    Enemy *enemy3 = new_enemy(100, 110, 20, 20);
 
     Move *move1 = new_move(-1, 2);
     Move *move2 = new_move(-1, 0);
@@ -77,9 +80,30 @@ void run_game() {
 
         flush_buffer();
 
+        done = check_enemy_contact(p, wave, enemy3);
       
 
     }
+}
+
+bool check_enemy_contact(Player *player, Wave *wave, Enemy *enemy3) {
+    // for enemy in wave: if enemy X range and player X range overlap
+    // if enemy Y range and player Y range overlap
+    // Then they have hit, print a random orange square
+    for (int i = 0; i < wave->enemies_length; i++) {
+        Enemy *enemy = wave->enemies[i];
+        int offset_x = player->x + player->width;
+        int offset_y = player->y + player->height;
+
+        if ((player->x >= enemy->x && player->x <= (enemy->x + enemy->width)) || (offset_x >= enemy->x && offset_x <= (enemy->x + enemy->width))) {
+            if ((player->y >= enemy->y && player->y <= (enemy->y + enemy->height)) || (offset_y >= enemy->y && offset_y <= (enemy->y + enemy->height))) {
+                enemy3->draw((Sprite *)enemy3);
+                return true;
+            }
+        }
+    }
+
+    return false;
 }
 
 void wave_update(Wave *wave) {
