@@ -107,6 +107,10 @@ void _draw_enemy(Sprite* s){
     // Get Enemy object
     Enemy* self = (Enemy*)s;
 
+    if (self->invisible) {
+        return;
+    }
+
     // Draw Enemy 
     /*
     for(int x = self->x; x < self->x + self->width && x<320; x++){

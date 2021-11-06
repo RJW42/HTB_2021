@@ -16,7 +16,8 @@ void clear_screen();
 void wave_update(Wave *wave);
 void all_bullet_update(Bullet** bs);
 void bullet_update(Bullet* b);
-bool check_enemy_contact(Player *player, Wave *wave, Enemy *enemy3);
+bool check_enemy_contact(Player *player, Wave *wave);
+void check_bullet_contact(Player *player, Wave *wave);
 
 // Main game driver code
 void run_game() {
@@ -96,8 +97,10 @@ void run_game() {
         // Display Updates 
         flush_buffer();
 
+        check_bullet_contact(p, wave);
+
         // Check for end condition 
-        done = check_enemy_contact(p, wave, enemy3);
+        done = check_enemy_contact(p, wave);
     }
 }
 
@@ -133,7 +136,7 @@ void bullet_update(Bullet* b) {
     b->x += 1;
 }
 
-bool check_enemy_contact(Player *player, Wave *wave, Enemy *enemy3) {
+bool check_enemy_contact(Player *player, Wave *wave) {
     // for enemy in wave: if enemy X range and player X range overlap
     // if enemy Y range and player Y range overlap
     // Then they have hit, print a random orange square
@@ -145,7 +148,6 @@ bool check_enemy_contact(Player *player, Wave *wave, Enemy *enemy3) {
         if (!enemy->invisible) {
         if ((player->x >= enemy->x && player->x <= (enemy->x + enemy->width)) || (offset_x >= enemy->x && offset_x <= (enemy->x + enemy->width))) {
             if ((player->y >= enemy->y && player->y <= (enemy->y + enemy->height)) || (offset_y >= enemy->y && offset_y <= (enemy->y + enemy->height))) {
-                enemy3->draw((Sprite *)enemy3);
                 return true;
             }
         }
@@ -153,6 +155,34 @@ bool check_enemy_contact(Player *player, Wave *wave, Enemy *enemy3) {
     }
 
     return false;
+}
+
+void check_bullet_contact(Player *player, Wave *wave) {
+    // For bullet in bullets, for enemy in wave, if both visible, if they both intersect then they both become invisible.
+    for (int i = 0; i < BULLETS; i++) {
+        Bullet *b = player->bullets[i];
+        if (b->invisible) {
+            continue;
+        }
+        for (int j = 0; j < wave->enemies_length; j++) {
+            Enemy *e = wave->enemies[i];
+            if (e->invisible) {
+                continue;
+            }
+
+            int offset_x = b->x + b->width;
+            int offset_y = b->y + b->height;
+
+            if ((b->x >= e->x && b->x <= (e->x + e->width)) || (offset_x >= e->x && offset_x <= (e->x + e->width))) {
+            if ((b->y >= e->y && b->y <= (e->y + e->height)) || (offset_y >= e->y && offset_y <= (e->y + e->height))) {
+                b->invisible = true;
+                e->invisible = true;
+            }
+        }
+
+        }
+
+    }
 }
 
 
