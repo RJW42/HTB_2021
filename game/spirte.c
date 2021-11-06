@@ -19,6 +19,7 @@ Player* new_player(int x, int y, int width, int height){
     self->height = height;
     self->draw = _draw_player;
     self->collision = _collision_player;
+    self->cooldown = 0;
 
     return self;
 }
@@ -31,7 +32,7 @@ void _draw_player(Sprite* s){
     // Draw player 
     for(int x = self->x; x < self->x + self->width && x<320; x++){
         for(int y = self->y; y < self->y + self->height && y<200; y++){
-            put_pixel_exact(x, y, (u8)200);
+            put_pixel_exact(x, y, (u8)40);
         }
     }
 }

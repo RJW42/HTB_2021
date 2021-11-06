@@ -21,7 +21,44 @@ void run_game() {
 
     // Game loop
     while(!done) {
-
+        p->draw((Sprite*)p);
+        //player_input(keys, p);
     }
 
+}
+
+void player_input(u8* keys, Player *p) {
+    if(KEY_K) {
+        // Up
+
+        // Check that not going to go out of bounds 
+        if (p->y == 10) {
+            return;
+        }
+
+        // Move player up
+        p->y++;
+    } else if (KEY_L) {
+        // Down
+
+        // Check that not going to go out of bounds 
+        if (p->y == 170) {
+            return;
+        }
+
+        // Move player down
+        p->y--;
+    } else if (KEY_A) {
+        // Shoot
+
+        // Check able to shoot
+        if(p->cooldown != 0) {
+            p->cooldown--;
+        } else {
+            // Able to shoot
+
+            // Reset cooldown
+            p->cooldown = 10;
+        }
+    }
 }
