@@ -8,6 +8,7 @@
 #include "../libc/rand.h"
 
 #define NUM_STARS 60
+#define PLAYER_MOVE_COOLDOWN 15
 
 // Init functions 
 void wait_until(u32 time);
@@ -183,7 +184,7 @@ void player_input(u8* keys, Player *p, int *movement_cooldown) {
         y_minus++;
         y_plus = 0;
 
-        if(y_minus >= 13){
+        if(y_minus >= PLAYER_MOVE_COOLDOWN){
             p->y -= 1;
             y_minus = 0;
         }
@@ -199,7 +200,7 @@ void player_input(u8* keys, Player *p, int *movement_cooldown) {
         y_plus++;
         y_minus = 0;
 
-        if(y_plus >= 13){
+        if(y_plus >= PLAYER_MOVE_COOLDOWN){
             p->y+=1;
             y_plus = 0;
         }
