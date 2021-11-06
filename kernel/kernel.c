@@ -15,6 +15,18 @@ void main() {
 
     // Run game
     run_game();
+
+    /*
+    for(int x = 0; x < 64; x++){
+        put_pixel_exact(x, 0, x);
+        put_pixel_exact(x, 1, x);
+        put_pixel_exact(x, 2, x);
+        put_pixel_exact(x, 3, x);
+        put_pixel_exact(x, 4, x);
+        put_pixel_exact(x, 5, x);
+        put_pixel_exact(x, 6, x);
+        put_pixel_exact(x, 7, x);
+    }*/
 }
 
 
@@ -42,6 +54,4 @@ void init(){
     for(int x = 0; x < 320; x++)
         for(int y = 0; y < 200; y++)
             put_pixel_exact(x, y, 0);
-
-    run_game();
 }

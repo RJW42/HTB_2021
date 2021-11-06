@@ -1,12 +1,13 @@
-static int a = 9;       // multiplier
-static int b = 13;      // increment
-static int m = 17;      // modulus
+#include "rand.h"
+
+static unsigned int a = 9;       // multiplier
+static unsigned int b = 13;      // increment
 
 
-int generate_rand() {
+unsigned int generate_rand(unsigned int modulo) {
     // Set seed
-    static int x0 = 12;
+    static unsigned int x0 = 12;
 
-    x0 = (a * x0 + b) % m;
+    x0 = (a * x0 + b) % modulo;
     return x0;
 }
