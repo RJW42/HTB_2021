@@ -137,5 +137,4 @@ void isr_handler(registers_t r) {
     // for(int x = 0; x < 320; x++)
     //     for(int y = 0; y < 200; y++)
     //         put_pixel(x, y, 0, 0, 80);
-
 }

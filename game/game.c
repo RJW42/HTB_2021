@@ -24,7 +24,6 @@ void run_game() {
 
     // Init Player 
     Player *p = new_player(20, 90, 20, 20);
-
     u32 previous_time = get_time();
 
     Enemy *enemy1 = new_enemy(200, 70, 20, 20);
