@@ -24,6 +24,7 @@ void run_game() {
 
     // Game loop
     while(!done) {
+
         // Get time of last frame  then update previos time. 
         // We update previous time now as we want to record 
         // the time it took to write the game logic 
@@ -47,17 +48,40 @@ void run_game() {
     }
 }
 
-void game_logic(u8 test){
-    for(int x = 0; x < 360; x++){
-        for(int y = 0; y < 200; y++){
-            put_pixel_exact(x, y, test);
+
+void player_input(u8* keys, Player *p) {
+    if(KEY_K) {
+        // Up
+
+        // Check that not going to go out of bounds 
+        if (p->y == 10) {
+            return;
         }
-    }
+
+        // Move player up
+        p->y++;
+    } else if (KEY_L) {
+        // Down
+
+        // Check that not going to go out of bounds 
+        if (p->y == 170) {
+            return;
+        }
+
+        // Move player down
+        p->y--;
+    } else if (KEY_A) {
+        // Shoot
+
+        // Check able to shoot
+        if(p->cooldown != 0) {
+            p->cooldown--;
+        } else {
+            // Able to shoot
+
+            // Reset cooldown
+            p->cooldown = 10;
+        }
+
 }
-
-
-void wait_until(u32 time){
-    // Busy weight until 
-    while(get_time() <= time){
-    }
 }

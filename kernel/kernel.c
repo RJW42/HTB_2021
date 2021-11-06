@@ -42,4 +42,6 @@ void init(){
     for(int x = 0; x < 320; x++)
         for(int y = 0; y < 200; y++)
             put_pixel_exact(x, y, 0);
+
+    run_game();
 }

@@ -19,6 +19,7 @@ Player* new_player(int x, int y, int width, int height){
     self->height = height;
     self->draw = _draw_player;
     self->collision = _collision_player;
+    self->cooldown = 0;
 
     return self;
 }
