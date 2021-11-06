@@ -7,6 +7,9 @@
 /* ***** Player ***** */
 void _draw_player(Sprite* self);
 bool _collision_player(Sprite* self, Sprite* other);
+bool _collision_bullet(Sprite *s, Sprite *other);
+Bullet* new_bullet();
+void _draw_bullet(Sprite* s);
 
 Player* new_player(int x, int y, int width, int height){
     // Malloc Player Mem 
@@ -19,11 +22,43 @@ Player* new_player(int x, int y, int width, int height){
     self->height = height;
     self->draw = _draw_player;
     self->collision = _collision_player;
-    self->bullets = (Bullet**)malloc(sizeof(Bullet)*10);
-    
+    self->bullets = (Bullet**)malloc(sizeof(Bullet)*BULLETS);
+
+    // Creating the bullets
+    for(int i = 0; i < BULLETS; i ++) {
+        self->bullets[i] = new_bullet();
+    }
     return self;
 }
 
+Bullet* new_bullet() {
+    Bullet* self = (Bullet*) malloc(sizeof(Bullet));
+    static y = 0;
+    // Init vars
+    self->x = 0;
+    self->y = y;
+    self->width = 6;
+    self->height = 3;
+    self->draw = _draw_bullet;
+    self->collision = _collision_bullet;
+    self->invisible = true;
+    y+= 4;
+    return self;
+}
+
+void _draw_bullet(Sprite* self) {
+    Bullet* b = (Bullet*)self;
+
+    for(int x = self->x; x < self->x + self->width && x<320; x++){
+        for(int y = self->y; y < self->y + self->height && y<200; y++){
+            put_buffer_exact(x, y, (u8)40);
+        }
+    }
+}
+
+bool _collision_bullet(Sprite *s, Sprite *other) {
+    return false;
+}
 
 void _draw_player(Sprite* s){
     // Get Player object

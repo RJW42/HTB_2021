@@ -1,6 +1,6 @@
 #ifndef SPRITE_H_
 #define SPRITE_H_
-
+#define BULLETS 25
 #include "../cpu/types.h"
 
 struct Sprite {
@@ -21,6 +21,7 @@ struct Bullet {
     int width;
     int height;
     bool (*collision)(struct Sprite *self, struct Sprite *other);
+    bool invisible;
  } __attribute__((packed));
 
 struct Player {
