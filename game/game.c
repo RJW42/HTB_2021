@@ -19,8 +19,8 @@ void run_game() {
 
     // Init Player 
     Player *p = new_player(90, 0, 20, 20);
+    
     u32 previous_time = get_time();
-    u8 test = 0;
 
     // Game loop
     while(!done) {
@@ -28,22 +28,30 @@ void run_game() {
         // Get time of last frame  then update previos time. 
         // We update previous time now as we want to record 
         // the time it took to write the game logic 
+        
         u32 current_time = get_time();
 
         if(current_time - previous_time < 40){
             put_pixel_exact(0, 0, 0);
             continue;
-        }
+        } 
 
         // End of timer information. Start of game logic
-        
-        for(int x = 0; x < 360; x++){
-            for(int y = 0; y < 200; y++){
-                put_pixel_exact(x, y, test);
+        if(keys[KEY_1]){
+            for(int x = 0; x < 360; x++){
+                for(int y = 0; y < 200; y++){
+                    put_buffer_exact(x, y, 40);
+                }
+            }
+        }else{
+            for(int x = 0; x < 360; x++){
+                for(int y = 0; y < 200; y++){
+                    put_buffer_exact(x, y, 0);
+                }
             }
         }
-        
-        test++;
+
+        flush_buffer();
 
     }
 }

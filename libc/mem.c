@@ -13,7 +13,7 @@ void memory_set(u8 *dest, u8 val, u32 len) {
 }
 
 // Next point in memory to allocate from
-u32 free_mem_addr = 0x100000;
+u32 free_mem_addr = 0x1000000;
 
 u32 malloc(u32 size) {
 
