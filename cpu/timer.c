@@ -10,6 +10,10 @@ static void timer_callback(registers_t regs) {
     tick += 1;
 }
 
+u32 get_time(){
+    return tick;
+}
+
 void init_timer(u32 freq) {
     /* Install the function we just wrote */
     register_interrupt_handler(IRQ0, timer_callback);
