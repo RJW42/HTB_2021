@@ -210,7 +210,7 @@ void handle_letter(u8 scancode) {
             key_presses[KEY_SPC] = 1;
             return;
         default:
-            return;
+            break;
     }
     /* 'keuyp' event corresponds to the 'keydown' + 0x80 
      * it may still be a scancode we haven't implemented yet, or
@@ -392,7 +392,7 @@ void handle_letter(u8 scancode) {
                 key_presses[KEY_SPC] = 0;
                 return;
             default:
-                return;
+                break;
         }
     } 
 }
