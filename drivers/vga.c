@@ -60,6 +60,7 @@ int set_vga_mode(u32 width, u32 height, u32 color_depth){
             0x41, 0x00, 0x0F, 0x00,	0x00
     };
 
+
     write_vga_registers(g_320x200x256);
 
     return 1; // True as if reached here then all good 
@@ -68,7 +69,8 @@ int set_vga_mode(u32 width, u32 height, u32 color_depth){
 
 void put_pixel_exact(u32 x, u32 y, u8 color_value){
     u8 *p = ((u8*)0xA0000) + 320 * y + x;
-    *p = color_value;
+    //u8 *p = (get_frame_buffer_segment()) + 320 * y + x;
+    *p = color_value; 
 }
 
 void put_pixel(u32 x, u32 y, u8 r, u8 g, u8 b){

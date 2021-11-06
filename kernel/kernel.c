@@ -4,6 +4,7 @@
 #include "../cpu/timer.h"
 #include "../drivers/keyboard.h"
 #include "../game/game.h"
+#include "../game/sprite.h"
 
 void init();
 
@@ -11,6 +12,7 @@ void init();
 void main() {
     // Initilise The OS 
     init();
+
 
 }
 
@@ -34,4 +36,9 @@ void init(){
     
     // Set the CPU into graphics mode. Width = 320, Height = 200, ColorDepth = 8
     set_vga_mode(320, 200, 8);
+
+    // Clear screen to black 
+    for(int x = 0; x < 320; x++)
+        for(int y = 0; y < 200; y++)
+            put_pixel_exact(x, y, 0);
 }
