@@ -4,9 +4,9 @@
 #include "../cpu/types.h"
 
 struct sprite_struct_ {
-    void (*draw)(struct sprite_struct_ *self);
-    int x;
-    int y;
+    void (*draw)(struct sprite_struct_ *self, u8, u8);
+    u8 height;
+    u8 width;
 }__attribute__((packed));
 
 typedef struct sprite_struct_ sprite;

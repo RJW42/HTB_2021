@@ -16,7 +16,7 @@ void main() {
     for(int x = 0; x < 320; x++)
         for(int y = 0; y < 200; y++){
             if(x % 2 == 0){
-                put_pixel(x, y, 50, 50, 0);
+                put_pixel(x, y, 0, 0, 50);
             }else{
                 put_pixel(x, y, 50, 0, 0);
             }
