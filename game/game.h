@@ -4,7 +4,7 @@
 #include "../cpu/types/h"
 
 struct spirte_struct_ {
-
+    void (*draw)(sprite)
 }__attribute__((packed));
 
 typedef struct spirte_struct_ sprite;
