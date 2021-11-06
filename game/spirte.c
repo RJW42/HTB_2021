@@ -128,6 +128,10 @@ void _wave_make_move(Wave *self){
         Enemy *e = self->enemies[i];
         e->x = e->x + m->x;
         e->y = e->y + m->y;
+
+        if (e->x <= 0) {
+            e->x = 320;
+        }
     }
 
     // Increment to next move in path
