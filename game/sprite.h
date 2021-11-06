@@ -58,6 +58,16 @@ struct Text {
     int textLength;
 } __attribute__((packed));
 
+struct Helper {
+    void (*draw)(struct Sprite *self);
+    int x;
+    int y;
+    int frame;
+    int width;
+    int height;
+    bool (*collision)(struct Sprite *self, struct Sprite *other);
+} __attribute__((packed));
+
 
 struct Star {
     void (*draw)(struct Sprite *self);
@@ -94,12 +104,14 @@ typedef struct Wave Wave;
 typedef struct Star Star;
 typedef struct Bullet Bullet;
 typedef struct Text Text;
+typedef struct Helper Helper;
 
 Text* new_text(int x, int y, int width, int height, char* text, int textLength);
 Player* new_player(int x, int y, int width, int height);
 Enemy* new_enemy(int x, int y, int width, int height);
 Wave* new_wave(Enemy** enemies, int enemies_length, Move** path, int path_length);
 Move* new_move(int x, int y);
+Helper* new_helper(int x, int y, int width, int height);
 Star* new_star(int y, u8 color);
 
 #endif

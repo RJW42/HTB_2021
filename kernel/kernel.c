@@ -7,6 +7,7 @@
 #include "../game/sprite.h"
 
 void init();
+void openGame();
 
 
 void main() {
@@ -14,6 +15,13 @@ void main() {
     init();
 
     // Display Start
+    openGame();
+
+    u8* keys = get_key_presses();
+
+    while(!keys[KEY_ENTER]){
+
+    }
 
     // Run game
     run_game();
@@ -57,5 +65,25 @@ void init(){
     for(int x = 0; x < 320; x++)
         for(int y = 0; y < 200; y++)
             put_pixel_exact(x, y, 0);
+}
+
+void openGame(){
+
+    Text *Title = new_text(30,50,0,0,"SPACEHAWK!",10);
+    Text *SubHeader1 = new_text(30,80,0,0,"YOU ARE ON YOUR OWN.",20);
+    Text *SubHeader2 = new_text(30,100,0,0,"GET OUT OF THERE!",17);
+    Text *SubHeader3 = new_text(30,140,0,0,"PRESS ENTER TO BEGIN!...",24);
+
+    Helper *helper = new_helper(70,250,0,0);
+
+    Title->draw((Sprite *) Title);
+    SubHeader1->draw((Sprite *) SubHeader1);
+    SubHeader2->draw((Sprite *) SubHeader2);
+    SubHeader3->draw((Sprite *) SubHeader3);
+
+    helper->draw((Sprite *) helper);
+
+
+
 }
 
