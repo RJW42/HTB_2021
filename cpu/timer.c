@@ -4,7 +4,7 @@
 #include "../drivers/ports.h"
 #include "isr.h"
 
-u32 tick = 0;
+static u32 tick = 0;
 
 static void timer_callback(registers_t regs) {
     tick += 1;

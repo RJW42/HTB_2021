@@ -6,9 +6,11 @@
 #include "../cpu/timer.h"
 #include "sprite.h"
 
+// Init functions 
+void wait_until(u32 time);
+
 // Main game driver code
 void run_game() {
-
     // Get the keys pressed 
     u8* keys = get_key_presses();
 
@@ -18,14 +20,34 @@ void run_game() {
     // Init Player 
     Player *p = new_player(90, 0, 20, 20);
     u32 previous_time = get_time();
+    u8 test = 0;
 
     // Game loop
     while(!done) {
-        p->draw((Sprite*)p);
-        //player_input(keys, p);
-    }
 
+        // Get time of last frame  then update previos time. 
+        // We update previous time now as we want to record 
+        // the time it took to write the game logic 
+        u32 current_time = get_time();
+
+        if(current_time - previous_time < 40){
+            put_pixel_exact(0, 0, 0);
+            continue;
+        }
+
+        // End of timer information. Start of game logic
+        
+        for(int x = 0; x < 360; x++){
+            for(int y = 0; y < 200; y++){
+                put_pixel_exact(x, y, test);
+            }
+        }
+        
+        test++;
+
+    }
 }
+
 
 void player_input(u8* keys, Player *p) {
     if(KEY_K) {
@@ -60,5 +82,6 @@ void player_input(u8* keys, Player *p) {
             // Reset cooldown
             p->cooldown = 10;
         }
-    }
+
+}
 }
