@@ -77,9 +77,9 @@ void text_loop(int letter[][8], int currentLetter, int posX, int posY){
             for (int x = 0; x < 2; x++){
                 for (int y = 0; y < 2; y++){
                     if (letter[j][i]){
-                        put_pixel_exact(posX + (i * 1) + x + (currentLetter * 9), posY + (j * 1) + y, 10);
+                        put_pixel_exact(posX + (i * 1) + x + (currentLetter * 9), posY + (j * 1) + y, 63);
                     } else {
-                        put_pixel_exact(posX + (i * 1) + x + (currentLetter * 9), posY + (j * 1) + y, 5);
+                        put_pixel_exact(posX + (i * 1) + x + (currentLetter * 9), posY + (j * 1) + y, 0);
                     }
                     
                 }
@@ -241,6 +241,18 @@ void _draw_text(Sprite* s){
             case '0': ;
                 int letter_0[8][8] = {{0,0,0,0,0,0,0,0},{0,0,1,1,1,0,0,0},{0,1,0,0,1,1,0,0},{1,1,0,0,1,1,1,0},{1,1,0,0,0,1,1,0},{1,1,0,0,0,1,1,0},{0,1,1,0,0,1,0,0},{0,0,1,1,1,0,0,0}};
                 text_loop(letter_0, currentLetter, posX, posY);
+                break;
+            case ' ': ;
+                int letter_spc[8][8] = {{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0}};
+                text_loop(letter_spc, currentLetter, posX, posY);
+                break;
+            case '!': ;
+                int letter_exc[8][8] = {{0,0,0,0,0,0,0,0},{0,0,0,1,1,0,0,0},{0,0,0,1,1,0,0,0},{0,0,0,1,1,0,0,0},{0,0,0,1,1,0,0,0},{0,0,0,1,1,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,1,1,0,0,0}};
+                text_loop(letter_exc, currentLetter, posX, posY);
+                break;
+            case '.': ;
+                int letter_period[8][8] = {{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,1,1,0,0,0},{0,0,0,1,1,0,0,0}};
+                text_loop(letter_period, currentLetter, posX, posY);
                 break;
         }
     }

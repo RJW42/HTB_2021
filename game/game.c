@@ -17,12 +17,7 @@ void run_game() {
 
     // Init Player 
     // Player *p = new_player(90, 0, 20, 20);
-
-    Text *title = new_text(20,10,0,0,"ABCDEFGHIJKLMNOPQRSTUVWXYZ0987654321", 36);
-
     u32 previous_time = get_time();
-
-    title->draw((Text *) title);
 
     // Game loop
     while(!done) {
