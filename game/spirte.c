@@ -213,9 +213,9 @@ void text_loop(int letter[][8], int currentLetter, int posX, int posY){
             for (int x = 0; x < 2; x++){
                 for (int y = 0; y < 2; y++){
                     if (letter[j][i]){
-                        put_pixel_exact(posX + (i * 1) + x + (currentLetter * 9), posY + (j * 1) + y, 63);
+                        put_buffer_exact(posX + (i * 1) + x + (currentLetter * 9), posY + (j * 1) + y, 63);
                     } else {
-                        put_pixel_exact(posX + (i * 1) + x + (currentLetter * 9), posY + (j * 1) + y, 0);
+                        put_buffer_exact(posX + (i * 1) + x + (currentLetter * 9), posY + (j * 1) + y, 0);
                     }
                     
                 }
