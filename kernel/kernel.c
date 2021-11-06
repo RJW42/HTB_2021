@@ -83,6 +83,8 @@ void openGame(){
 
     helper->draw((Sprite *) helper);
 
+    flush_buffer();
+
 
 
 }

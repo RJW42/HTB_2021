@@ -515,12 +515,13 @@ void _draw_helper(Sprite* s){
             for (int x = 0; x < 2; x++){
                 for (int y = 0; y < 2; y++){
                     if (arr[i][j]){
-                        put_pixel_exact(self->y + (j * 1) + y, self->x + (i * 1) + x, arr[i][j]);
+                        put_buffer_exact(self->y + (j * 1) + y, self->x + (i * 1) + x, arr[i][j]);
                     }
                 }
             }
         }
     }
+}
   
 
 /* ***** Stars ***** */
@@ -550,3 +551,4 @@ void _draw_star(Sprite* s){
             put_buffer_exact(x, y, self->color);
         }
     }
+}
