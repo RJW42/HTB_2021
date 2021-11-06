@@ -14,6 +14,8 @@ void wait_until(u32 time);
 void player_input(u8* keys, Player *p, int *movement_cooldown);
 void clear_screen();
 void wave_update(Wave *wave);
+void all_bullet_update(Bullet** bs);
+void bullet_update(Bullet* b);
 bool check_enemy_contact(Player *player, Wave *wave, Enemy *enemy3);
 
 // Main game driver code
@@ -75,10 +77,21 @@ void run_game() {
             enemies[i]->draw((Sprite *)enemies[i]);
         }
 
-        // Handle Player Input 
+        // Draw all bullets
+        for(int i = 0; i < BULLETS; i++) {
+                if(!(p->bullets[i]->invisible)) {
+                    // Use this bullet
+                    Bullet* b = (Bullet*)(p->bullets[i]);
+                    b->draw((Sprite*)b);
+                    
+                }
+            }
+
         player_input(keys, (Player*)p, &movement_cooldown);
 
-        // Update enemies 
+        // Draw all bullets
+        all_bullet_update(p->bullets);
+
         wave_update(wave);
 
         // Display Updates 
@@ -87,6 +100,38 @@ void run_game() {
         // Check for end condition 
         done = check_enemy_contact(p, wave, enemy3);
     }
+}
+
+void all_bullet_update(Bullet** bs) {
+    static int tempo = 0;
+
+    if(++tempo <= 15) {
+        
+        return;
+    }
+
+    tempo = 0;
+    
+    for(int i = 0; i < BULLETS; i++) {
+                    if(!(bs[i]->invisible)) {
+                        // Use this bullet
+                        Bullet* b = (Bullet*)(bs[i]);
+                        bullet_update(b);
+                        
+                    }
+                }
+}
+
+void bullet_update(Bullet* b) {
+    
+
+    if(b->x + b->width >= 360) {
+        b->invisible = true;
+        b->x = 0;
+        b->y = 0;
+        return;
+    }
+    b->x += 1;
 }
 
 bool check_enemy_contact(Player *player, Wave *wave, Enemy *enemy3) {
@@ -120,7 +165,9 @@ void wave_update(Wave *wave) {
 void player_input(u8* keys, Player *p, int *movement_cooldown) {
     static int y_plus = 0;
     static int y_minus = 0;
-    static int bullet_cooldown = 0;
+    static int bullet_cooldown = 400;
+
+    --bullet_cooldown;
 
     if(keys[KEY_K]) {
         // Up
@@ -157,12 +204,23 @@ void player_input(u8* keys, Player *p, int *movement_cooldown) {
     } else if (keys[KEY_A]) {
         // Shoot
 
-        if( ++bullet_cooldown >= 15) {
+        if(bullet_cooldown <= 0) {
             // Shoot the bullet
 
+            // Finding a bullet that is currently invisible i.e not in use
+            for(int i = 0; i < BULLETS; i++) {
+                if((p->bullets[i]->invisible)) {
+                    // Use this bullet
+                    Bullet* b = (Bullet*)(p->bullets[i]);
+                    b->invisible = false;
+                    b->x = p->x + p->width;
+                    b->y = p->y + (p->height / 2) - 1;
+                    break;
+                }
+            }
 
             // reset the counter
-            bullet_cooldown = 0;
+            bullet_cooldown = 400;
         }
 
         
