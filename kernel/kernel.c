@@ -55,3 +55,4 @@ void init(){
         for(int y = 0; y < 200; y++)
             put_pixel_exact(x, y, 0);
 }
+
