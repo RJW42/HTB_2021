@@ -21,6 +21,7 @@ struct Player {
     int width;
     int height;
     bool (*collision)(struct Sprite *self, struct Sprite *other);
+    int cooldown;
 } __attribute__((packed));
 
 struct Enemy {

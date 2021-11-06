@@ -1,7 +1,7 @@
 #include "./ports.h"
 #include "./vga.h"
 #include "../cpu/types.h"
-
+#include "../libc/mem.h"
 
 // VGA Ports
 #define VGA_MISC_PORT 0x3c2
@@ -20,7 +20,9 @@
 
 
 // Define gloabls 
-u8* frame_buffer_segment = UNSET;
+static u8* frame_buffer_segment = UNSET;
+static u8* vga_buffer; 
+
 
 
 // Define hidden functions 
@@ -39,6 +41,9 @@ int set_vga_mode(u32 width, u32 height, u32 color_depth){
     if(!supports_mode(width, height, color_depth)){
         return 0;
     }
+
+
+    vga_buffer = (u8*)malloc(sizeof(u8) * 320 * 200);
 
     // Set the onde mode 
     u8 g_320x200x256[] = {
@@ -71,6 +76,18 @@ void put_pixel_exact(u32 x, u32 y, u8 color_value){
     u8 *p = ((u8*)0xA0000) + 320 * y + x;
     //u8 *p = (get_frame_buffer_segment()) + 320 * y + x;
     *p = color_value; 
+}
+
+
+void put_buffer_exact(u32 x, u32 y, u8 color_value){
+    vga_buffer[ 320 * y + x] = color_value;
+}
+
+void flush_buffer(){
+    for(int x = 0; x < 320 * 200; x++){
+        u8 *p = ((u8*)0xA0000) + x;
+        *p = vga_buffer[x];
+    }
 }
 
 void put_pixel(u32 x, u32 y, u8 r, u8 g, u8 b){
